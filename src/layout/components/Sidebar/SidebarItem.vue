@@ -60,26 +60,27 @@ export default {
   methods: {
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
+        // 如果 children 中的路由包含 hidden 属性，则返回 false
         if (item.hidden) {
           return false
         } else {
-          // Temp set(will be used if only has one showing child)
+          // 将子路由赋值给 onlyOneChild，用于只包含一个路由时展示
           this.onlyOneChild = item
           return true
         }
       })
 
-      // When there is only one child router, the child router is displayed by default
+      // 如果过滤后，只包含展示一个路由，则返回 true
       if (showingChildren.length === 1) {
         return true
       }
 
-      // Show parent if there are no child router to display
+      // 如果没有子路由需要展示，则将 onlyOneChild 的 path 设置空路由，并添加 noShowingChildren 属性，表示虽然有子路由，但是不需要展示子路由
       if (showingChildren.length === 0) {
         this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
         return true
       }
-
+      // 返回 false，表示不需要展示子路由，或者超过一个需要展示的子路由
       return false
     },
     resolvePath(routePath) {
