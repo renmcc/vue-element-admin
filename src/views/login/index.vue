@@ -78,16 +78,16 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能少于6位'))
+      if (value.length < 4) {
+        callback(new Error('密码不能少于4位'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: 'ren',
+        password: 'Ren19910202'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -154,7 +154,7 @@ export default {
               this.loading = false
             })
         } else {
-          console.log('error submit!!')
+          console.log('请输入正确的用户名或密码！！！')
           return false
         }
       })

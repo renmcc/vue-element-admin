@@ -27,9 +27,10 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (res.code !== 20000) {
+    const errMsg = res.message || '登录失败'
+    if (response.status !== 200) {
       Message({
-        message: res.message || 'Error',
+        message: errMsg,
         type: 'error',
         duration: 5 * 1000
       })
@@ -47,18 +48,25 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.message || errMsg))
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    if (error.response.status === 400) {
+      Message({
+        message: '用户名或密码错误',
+        type: 'error',
+        duration: 5 * 1000
+      })
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
     return Promise.reject(error)
   }
 )

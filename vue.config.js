@@ -35,6 +35,15 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: 'http://192.168.10.10:8000',
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
     }
     // before: require('./mock/mock-server.js')
   },
