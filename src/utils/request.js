@@ -13,7 +13,7 @@ service.interceptors.request.use(
   config => {
     // 如果存在 token 则附带在 http header 中
     if (store.getters.token) {
-      config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = `Bearer ${getToken()}`
     }
     return config
   },

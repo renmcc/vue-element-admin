@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://192.168.10.10:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -94,7 +94,7 @@ module.exports = {
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('source-map')
       // config => config.devtool('eval')
-  )
+      )
 
     config
       .when(process.env.NODE_ENV !== 'development',

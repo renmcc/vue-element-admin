@@ -1,16 +1,12 @@
 <template>
-  <div>
-    <el-input v-model="input" placeholder="请输入内容" />
-  </div>
+  <h1>list</h1>
 </template>
 
 <script>
 export default {
-  name: 'BookList',
   data() {
     return {
-      isCollapse: false,
-      input: ''
+      isCollapse: false
     }
   },
   methods: {

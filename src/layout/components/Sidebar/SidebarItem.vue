@@ -2,6 +2,7 @@
   <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+        <!--        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">-->
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" @click="clickLink(resolvePath(onlyOneChild.path))">
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="generateTitle(onlyOneChild.meta.title)" />
         </el-menu-item>
@@ -93,7 +94,7 @@ export default {
       return path.resolve(this.basePath, routePath)
     },
     clickLink(path) {
-      this.$router.push({
+      this.$router.replace({
         path: '/'
       })
     },
