@@ -1,24 +1,22 @@
 <template>
-  <h1>list</h1>
+  <div>
+    <detail :is-edit="true" />
+  </div>
 </template>
 
 <script>
+import Detail from './components/Detail'
+
 export default {
+  components: {
+    Detail
+  },
   data() {
     return {
-      isCollapse: false
+
     }
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log('handleSelect', key, keyPath)
-    },
-    handleOpen(key, keyPath) {
-      console.log('handleOpen', key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log('handleClose', key, keyPath)
-    }
   }
 }
 </script>
