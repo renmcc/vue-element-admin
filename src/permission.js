@@ -35,7 +35,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // 异步获取用户的角色
-          const { roles } = await store.dispatch('user/getInfo')
+          const { roles } = await store.dispatch('user/getUserInfo')
           // 根据用户角色，动态生成路由
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           // 调用 router.addRoutes 动态添加路由

@@ -50,6 +50,20 @@ export const constantRoutes = [
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
     ]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: '/user/center',
+        component: () => import('@/views/user/index'),
+        name: '个人中心',
+        meta: { title: '个人中心', icon: 'user' }
+      }
+    ]
   }
 ]
 

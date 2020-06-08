@@ -8,10 +8,26 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo(name) {
   return request({
-    url: '/api/userInfo/',
+    url: `/api/userInfo/${name}/`,
     method: 'get'
+  })
+}
+
+export function updateInfo(name, data) {
+  return request({
+    url: `/api/userInfo/${name}/`,
+    method: 'patch',
+    data
+  })
+}
+
+export function changePassword(data) {
+  return request({
+    url: `/api/changePassword/`,
+    method: 'post',
+    data
   })
 }
 

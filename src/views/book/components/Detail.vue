@@ -27,7 +27,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item prop="title">
-              <md-input v-model="postForm.title" :maxlength="100" name="name" required>
+              <md-input v-model="postForm.title" :maxlength="100" name="name" required type="email">
                 书名
               </md-input>
             </el-form-item>
