@@ -26,16 +26,16 @@ export default {
     },
     page: {
       type: Number,
-      default: 1
+      default: 10
     },
     limit: {
       type: Number,
-      default: 20
+      default: 10
     },
     pageSizes: {
       type: Array,
       default() {
-        return [10, 20, 30, 50]
+        return [1, 10, 50, 100, 10000]
       }
     },
     layout: {
