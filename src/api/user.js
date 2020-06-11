@@ -15,6 +15,22 @@ export function getInfo(name) {
   })
 }
 
+export function getUsers(listQuery) {
+  let after_date = ''
+  let before_date = ''
+  if (listQuery.datetimeValue == null) {
+    listQuery.datetimeValue = []
+  }
+  if (listQuery.datetimeValue.length > 0) {
+    after_date = listQuery.datetimeValue[0]
+    before_date = listQuery.datetimeValue[1]
+  }
+  return request({
+    url: `/api/userInfo/?search=${listQuery.search}&name=${listQuery.name}&date_joined_after=${after_date}&date_joined_before=${before_date}&ordering=${listQuery.order}${listQuery.prop}&page=${listQuery.page}&page_size=${listQuery.pageSize}`,
+    method: 'get'
+  })
+}
+
 export function updateInfo(name, data) {
   return request({
     url: `/api/userInfo/${name}/`,
@@ -28,6 +44,36 @@ export function changePassword(data) {
     url: `/api/changePassword/`,
     method: 'post',
     data
+  })
+}
+
+export function getGroupsInfo(name, data) {
+  return request({
+    url: `/api/groupsInfo/`,
+    method: 'get'
+  })
+}
+
+export function postUserInfo(data) {
+  return request({
+    url: `/api/userInfo/`,
+    method: 'post',
+    data
+  })
+}
+
+export function patchUserInfo(account, data) {
+  return request({
+    url: `/api/userInfo/${account}/`,
+    method: 'patch',
+    data
+  })
+}
+
+export function deleteUserInfo(account) {
+  return request({
+    url: `/api/userInfo/${account}/`,
+    method: 'delete'
   })
 }
 

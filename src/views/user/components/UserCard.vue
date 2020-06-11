@@ -6,10 +6,7 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="avatar" :height="'100px'" :width="'100px'" :hoverable="true">
-          <div>Hello</div>
-          {{ roles }}
-        </pan-thumb>
+        <pan-thumb :image="avatar" :height="'100px'" :width="'100px'" :hoverable="true" />
       </div>
       <div class="box-center">
         <div class="user-name text-center">{{ name }}</div>

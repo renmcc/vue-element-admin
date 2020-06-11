@@ -97,6 +97,22 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/system',
+    name: 'system',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true,
+    meta: { title: '系统管理', icon: 'documentation', roles: ['admin'] },
+    children: [
+      {
+        path: '/system/users',
+        name: 'Users',
+        component: () => import('@/views/system/users'),
+        meta: { title: '用户管理', icon: 'user', roles: ['admin'], noCache: true }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -26,40 +26,16 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   response => {
-    const res = response.data
-    const errMsg = res.message || '登录失败'
-    if (response.status !== 200) {
-      Message({
-        message: errMsg,
-        type: 'error',
-        duration: 5 * 1000
-      })
-      return Promise.reject(new Error(errMsg))
-    } else {
-      return res
-    }
+    return response.data
   },
   error => {
-    if (error.response.status === 400) {
-      Message({
-        message: '用户名或密码错误',
-        type: 'error',
-        duration: 5 * 1000
-      })
-    } else if (error.response.status === 401) {
-      Message({
-        message: '账号过期请重新登录',
-        type: 'error',
-        duration: 5 * 1000
-      })
-    } else {
-      Message({
-        message: error.message,
-        type: 'error',
-        duration: 5 * 1000
-      })
-      return Promise.reject(error)
-    }
+    Message({
+      message: error.response.data,
+      type: 'error',
+      duration: 5 * 1000
+    })
+    console.log(error.response)
+    return Promise.reject(error)
   }
 )
 
