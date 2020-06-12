@@ -68,6 +68,9 @@
         <el-form-item label="权限">
           <el-transfer
             v-model="temp.permissions"
+            filterable
+            :filter-method="permissionFilterMethod"
+            filter-placeholder="输入权限"
             :titles="['可用 权限', '选中的 权限 ']"
             :props="{
               key: 'id',
@@ -275,7 +278,9 @@ export default {
         }
       }))
     },
-    filterMethod() {}
+    permissionFilterMethod(query, item) {
+      return item.label.indexOf(query) > -1
+    }
   }
 }
 </script>

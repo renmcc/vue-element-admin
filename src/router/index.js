@@ -110,6 +110,12 @@ export const asyncRoutes = [
         name: 'Users',
         component: () => import('@/views/system/users'),
         meta: { title: '用户管理', icon: 'user', roles: ['admin'], noCache: true }
+      },
+      {
+        path: '/system/groups',
+        name: 'Groups',
+        component: () => import('@/views/system/groups'),
+        meta: { title: '角色管理', icon: 'peoples', roles: ['admin'], noCache: true }
       }
     ]
   },

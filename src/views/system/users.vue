@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-select v-model="listQuery.name" placeholder="用户名" clearable style="width: 100px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in list" :key="item.name" :label="item.name" :value="item.name" />
+        <el-option v-for="item in list" :key="item.id" :label="item.name" :value="item.name" />
       </el-select>
       <el-date-picker
         v-model="listQuery.datetimeValue"
@@ -95,7 +95,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="restData">取消</el-button>
+        <el-button @click="restData()">取消</el-button>
         <el-button type="primary" @click="dialogStatus==='创建用户'?createData():updateData()">确认</el-button>
       </div>
     </el-dialog>
@@ -144,8 +144,7 @@ export default {
         mobile: '',
         position: '',
         groups: [],
-        is_active: true,
-        date_joined: new Date()
+        is_active: true
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -197,8 +196,21 @@ export default {
         this.groupsInfo = response.results
       })
     },
+    restTemp() {
+      this.temp = {
+        username: '',
+        name: '',
+        password: '',
+        email: '',
+        mobile: '',
+        position: '',
+        groups: [],
+        is_active: true
+      }
+    },
     handleCreate() {
       this.dialogStatus = '创建用户'
+      this.restTemp()
       this.getGroups()
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -206,7 +218,8 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = row
+      // this.temp = row
+      this.temp = Object.assign({}, row)
       this.listLoading = false
       this.dialogStatus = '编辑账号'
       this.getGroups()
@@ -217,7 +230,7 @@ export default {
         if (valid) {
           postUserInfo(this.temp).then(response => {
             this.dialogFormVisible = false
-            this.$refs['dataForm'].resetFields()
+            this.restTemp()
             this.getList()
             this.$message({
               title: 'Success',
@@ -231,7 +244,6 @@ export default {
     },
     restData() {
       this.dialogFormVisible = false
-      this.$refs['dataForm'].resetFields()
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
