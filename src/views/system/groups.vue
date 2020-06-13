@@ -215,7 +215,6 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           const account = tempData.name
-          delete tempData.name
           Group(account, tempData, 'patch').then(() => {
             this.restData()
             this.getList()

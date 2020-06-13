@@ -73,7 +73,7 @@
         <el-form-item label="用户名" prop="name">
           <el-input v-model.trim="temp.name" placeholder="用户名" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus === '创建用户'" label="密码" prop="password">
+        <el-form-item label="密码" prop="password">
           <el-input v-model.trim="temp.password" placeholder="密码" show-password />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
@@ -153,7 +153,7 @@ export default {
       rules: {
         username: [{ required: true, message: '登录账号不能为空', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 2 到 20个字符', trigger: 'blur' }],
         name: [{ required: true, message: '用户名不能为空', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }],
-        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }, { min: 3, max: 20, message: '长度在 3 到 20个字符', trigger: 'blur' }],
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
         email: [{ required: true, message: '邮箱不能为空', trigger: 'blur' }, { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }],
         mobile: [{ required: true, trigger: 'blur' }, { min: 11, max: 11, message: '长度为11个字符', trigger: 'blur' }, { pattern: /^1[3|4|5|6|7|8][0-9]{9}$/, message: '输入正确的手机号', trigger: 'blur' }],
         position: [{ required: true, message: '职位不能为空', trigger: 'blur' }, { trigger: 'blur' }]
@@ -250,7 +250,6 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           const account = tempData.username
-          delete tempData.username
           patchUserInfo(account, tempData).then(() => {
             this.dialogFormVisible = false
             this.getList()
