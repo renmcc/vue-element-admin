@@ -98,24 +98,46 @@ export const asyncRoutes = [
   //   ]
   // },
   {
+    path: '/cmdb',
+    name: 'cmdb',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true,
+    meta: { title: '服务器管理', icon: 'documentation', roles: ['运维组'] },
+    children: [
+      {
+        path: '/cmdb/servers',
+        name: 'ServersList',
+        component: () => import('@/views/cmdb/serverslist'),
+        meta: { title: '服务器列表', icon: 'user', roles: ['运维组'], noCache: true }
+      }
+    ]
+  },
+  {
     path: '/system',
     name: 'system',
     component: Layout,
     redirect: 'noRedirect',
     alwaysShow: true,
-    meta: { title: '系统管理', icon: 'documentation', roles: ['admin'] },
+    meta: { title: '系统管理', icon: 'documentation', roles: ['运维组', '运营组'] },
     children: [
       {
         path: '/system/users',
         name: 'Users',
         component: () => import('@/views/system/users'),
-        meta: { title: '用户管理', icon: 'user', roles: ['admin'], noCache: true }
+        meta: { title: '用户管理', icon: 'user', roles: ['运维组'], noCache: true }
       },
       {
         path: '/system/groups',
         name: 'Groups',
         component: () => import('@/views/system/groups'),
-        meta: { title: '角色管理', icon: 'peoples', roles: ['admin'], noCache: true }
+        meta: { title: '角色管理', icon: 'peoples', roles: ['运维组'], noCache: true }
+      },
+      {
+        path: '/system/ipWhiteList.vue',
+        name: 'ipWhiteList.vue',
+        component: () => import('@/views/system/ipWhiteList.vue'),
+        meta: { title: 'IP白名单', icon: 'peoples', roles: ['运维组', '运营组'], noCache: true }
       }
     ]
   },

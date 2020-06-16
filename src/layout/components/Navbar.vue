@@ -12,9 +12,9 @@
 
       <!--        <screenfull id="screenfull" class="right-menu-item hover-effect" />-->
 
-      <!--        <el-tooltip content="Global Size" effect="dark" placement="bottom">-->
-      <!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
-      <!--        </el-tooltip>-->
+      <!--      <el-tooltip content="Global Size" effect="dark" placement="bottom">-->
+      <!--        <size-select id="size-select" class="right-menu-item hover-effect" />-->
+      <!--      </el-tooltip>-->
 
       <!--      </template>-->
 
@@ -51,7 +51,7 @@ export default {
     Hamburger
     // ErrorLog,
     // Screenfull,
-    // SizeSelect,
+    // SizeSelect
     // Search
   },
   computed: {

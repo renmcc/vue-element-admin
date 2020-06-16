@@ -1,26 +1,24 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.name" placeholder="组名" clearable style="width: 100px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in list" :key="item.id" :label="item.name" :value="item.name" />
-      </el-select>
-      <el-date-picker
-        v-model="listQuery.datetimeValue"
-        type="datetimerange"
-        value-format="yyyy-MM-dd HH:mm:ss"
-        range-separator="-"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        class="datetime"
-        @change="handleFilter"
-      />
-      <el-input v-model="listQuery.search" placeholder="用户组名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.search" placeholder="IP地址" style="width: 300px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
     </div>
     <div class="add-container">
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
+    <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" width="40%">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="70px" class="transfer-class">
+        <el-form-item label="IP地址" prop="ip_addr">
+          <el-input v-model.trim="temp.ip_addr" style="width: 300px" placeholder="IP地址" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="restData">取消</el-button>
+        <el-button type="primary" @click="dialogStatus==='添加白名单'?createData():updateData()">确认</el-button>
+      </div>
+    </el-dialog>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -31,7 +29,7 @@
       @sort-change="sortChange"
     >
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="70" />
-      <el-table-column label="用户组" prop="name" sortable="custom" min-width="90px" align="center" />
+      <el-table-column label="IP地址" prop="ip_addr" sortable="custom" min-width="90px" align="center" />
       <el-table-column label="创建时间" prop="add_time" sortable="custom" align="center" min-width="150" class-name="small-padding fixed-width" />
       <el-table-column label="更新时间" prop="update_time" sortable="custom" align="center" min-width="150" class-name="small-padding fixed-width" />
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
@@ -46,7 +44,7 @@
       :visible.sync="confirmDelete"
       width="30%"
     >
-      <span>确定要删除用户组<b>{{ deleteRowData.name }}</b>吗？</span>
+      <span>确定要删除IP地址<b>{{ deleteRowData.ip_addr }}</b>吗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="resetDjalog">取 消</el-button>
         <el-button type="primary" size="mini" @click="confirmDjalog">确 定</el-button>
@@ -59,37 +57,11 @@
       :limit.sync="listQuery.pageSize"
       @pagination="getList"
     />
-
-    <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible" width="70%">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="70px" class="transfer-class">
-        <el-form-item label="用户组" prop="name">
-          <el-input v-model.trim="temp.name" style="width: 600px" placeholder="用户组" />
-        </el-form-item>
-        <el-form-item label="权限">
-          <el-transfer
-            v-model="temp.permissions"
-            filterable
-            :filter-method="permissionFilterMethod"
-            filter-placeholder="输入权限"
-            :titles="['可用 权限', '选中的 权限 ']"
-            :props="{
-              key: 'id',
-              label: 'label'
-            }"
-            :data="groupsPermissions"
-          />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="restData">取消</el-button>
-        <el-button type="primary" @click="dialogStatus==='创建用户组'?createData():updateData()">确认</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getGroups2, getPermissionsInfo, Groups, Group, deleteGroup } from '@/api/user'
+import { getIpWhiteList, createIpWhite, updateIpWhite, deleteIpWhite } from '@/api/ipWhiteList'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
@@ -106,7 +78,7 @@ export default {
       listQuery: {
         page: 1,
         pageSize: 10,
-        name: '',
+        ip_addr: '',
         search: '',
         datetimeValue: [],
         order: '',
@@ -114,15 +86,14 @@ export default {
       },
       groupsPermissions: [],
       temp: {
-        name: '',
-        permissions: []
+        ip_addr: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        name: [{ required: true, message: '用户组不能为空', trigger: 'blur' }, { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }]
+        ip_addr: [{ required: true, message: '请输入IP地址', trigger: 'blur' }]
       },
       downloadLoading: false,
       confirmDelete: false,
@@ -135,7 +106,7 @@ export default {
   methods: {
     getList(obj) {
       this.listLoading = true
-      getGroups2(this.listQuery).then(response => {
+      getIpWhiteList(this.listQuery).then(response => {
         this.list = response.results
         this.total = response.count
         this.listLoading = false
@@ -154,24 +125,17 @@ export default {
       }
       this.getList()
     },
-    permissionsInfo() {
-      getPermissionsInfo().then(response => {
-        this.groupsPermissions = response
-      })
-    },
     restTemp() {
       this.temp = {
-        name: '',
-        permissions: []
+        ip_addr: ''
       }
     },
     restData() {
       this.dialogFormVisible = false
     },
     handleCreate() {
-      this.dialogStatus = '创建用户组'
+      this.dialogStatus = '添加白名单'
       this.restTemp()
-      this.permissionsInfo()
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -180,20 +144,19 @@ export default {
     handleUpdate(row) {
       this.temp = Object.assign({}, row)
       this.listLoading = false
-      this.dialogStatus = '编辑用户组'
-      this.permissionsInfo()
+      this.dialogStatus = '编辑白名单'
       this.dialogFormVisible = true
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          Groups(this.temp, 'post').then(response => {
+          createIpWhite(this.temp, 'post').then(response => {
             this.restTemp()
             this.restData()
             this.getList()
             this.$message({
               title: 'Success',
-              message: `用户组 ${this.temp.name} 创建成功`,
+              message: `白名单IP ${this.temp.ip_addr} 添加成功`,
               type: 'success',
               duration: 2000
             })
@@ -205,13 +168,13 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          const account = tempData.name
-          Group(account, tempData, 'patch').then(() => {
+          const ID = tempData.id
+          updateIpWhite(ID, tempData, 'patch').then(() => {
             this.restData()
             this.getList()
             this.$message({
               title: 'Success',
-              message: `${account} 更新成功`,
+              message: `${ID} 更新成功`,
               type: 'success',
               duration: 2000
             })
@@ -233,13 +196,13 @@ export default {
       })
     },
     confirmDjalog() {
-      const account = this.deleteRowData.name
-      deleteGroup(account).then(() => {
+      const ID = this.deleteRowData.id
+      deleteIpWhite(ID).then(() => {
         this.confirmDelete = false
         this.getList()
         this.$message({
           title: 'Success',
-          message: `账号 ${account} 删除成功`,
+          message: `账号 ${this.deleteRowData.ip_addr} 删除成功`,
           type: 'success',
           duration: 2000
         })
@@ -248,8 +211,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', '用户组', '创建时间', '更新时间']
-        const filterVal = ['id', 'name', 'add_time', 'update_time']
+        const tHeader = ['id', 'IP地址', '创建时间', '更新时间']
+        const filterVal = ['id', 'ip_addr', 'add_time', 'update_time']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,

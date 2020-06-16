@@ -36,7 +36,7 @@
       <el-table-column label="邮箱" prop="email" sortable="custom" min-width="180px" align="center" />
       <el-table-column label="手机号" prop="mobile" sortable="custom" min-width="110px" align="center" />
       <el-table-column label="职位" prop="position" sortable="custom" min-width="80px" align="center" />
-      <el-table-column label="角色" prop="roles" align="center" min-width="95" />
+      <el-table-column label="角色" prop="roles2" align="center" min-width="95" />
       <el-table-column label="账号状态" prop="is_active" sortable="custom" class-name="status-col" min-width="100" align="center" :formatter="accountFormatter" />
       <el-table-column label="创建时间" prop="date_joined" sortable="custom" align="center" min-width="150" class-name="small-padding fixed-width" />
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
@@ -87,7 +87,7 @@
         </el-form-item>
         <el-form-item label="用户组">
           <el-select v-model="temp.groups" class="filter-item" placeholder="用户组" multiple>
-            <el-option v-for="item in groupsInfo" :key="item.name" :label="item.name" :value="item.id" />
+            <el-option v-for="item in groupsInfo" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="账号状态" prop="is_active">
@@ -98,15 +98,6 @@
         <el-button @click="restData()">取消</el-button>
         <el-button type="primary" @click="dialogStatus==='创建用户'?createData():updateData()">确认</el-button>
       </div>
-    </el-dialog>
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
@@ -161,6 +152,13 @@ export default {
       downloadLoading: false,
       confirmDelete: false,
       deleteRowData: {}
+    }
+  },
+  watch: {
+    list() {
+      this.list.forEach(user => {
+        user.roles2 = user ? user.roles.join(', ') : ''
+      })
     }
   },
   created() {

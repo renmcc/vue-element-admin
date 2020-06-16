@@ -85,7 +85,6 @@ export function postUserInfo(data) {
 }
 
 export function patchUserInfo(account, data) {
-  console.log(data)
   return request({
     url: `/api/userInfo/${account}/`,
     method: 'patch',
