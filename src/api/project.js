@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getProjectAreaList(listQuery) {
+export function getProject(listQuery) {
   let after_date = ''
   let before_date = ''
   if (listQuery.datetimeValue == null) {
@@ -23,25 +23,25 @@ export function getProjectInfo(pageSize) {
   })
 }
 
-export function createIpWhite(data, method) {
+export function createProject(data, method) {
   return request({
-    url: `/api/IpWhiteList/`,
+    url: `/api/project/`,
     method,
     data
   })
 }
 
-export function updateIpWhite(ID, data, method) {
+export function updateProject(ID, data, method) {
   return request({
-    url: `/api/IpWhiteList/${ID}/`,
+    url: `/api/project/${ID}/`,
     method,
     data
   })
 }
 
-export function deleteIpWhite(ID) {
+export function deleteProject(ID) {
   return request({
-    url: `/api/IpWhiteList/${ID}/`,
+    url: `/api/project/${ID}/`,
     method: 'delete'
   })
 }

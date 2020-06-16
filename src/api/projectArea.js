@@ -23,25 +23,25 @@ export function getProjectAreaList2(pageSize) {
   })
 }
 
-export function createIpWhite(data, method) {
+export function createArea(data, method) {
   return request({
-    url: `/api/IpWhiteList/`,
+    url: `/api/projectArea/`,
     method,
     data
   })
 }
 
-export function updateIpWhite(ID, data, method) {
+export function updateArea(ID, data, method) {
   return request({
-    url: `/api/IpWhiteList/${ID}/`,
+    url: `/api/projectArea/${ID}/`,
     method,
     data
   })
 }
 
-export function deleteIpWhite(ID) {
+export function deleteArea(ID) {
   return request({
-    url: `/api/IpWhiteList/${ID}/`,
+    url: `/api/projectArea/${ID}/`,
     method: 'delete'
   })
 }

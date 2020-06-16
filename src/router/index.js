@@ -98,6 +98,40 @@ export const asyncRoutes = [
   //   ]
   // },
   {
+    path: '/project',
+    name: 'project',
+    component: Layout,
+    redirect: 'noRedirect',
+    alwaysShow: true,
+    meta: { title: '项目管理', icon: 'documentation', roles: ['运维组'] },
+    children: [
+      {
+        path: '/project/project',
+        name: 'Project',
+        component: () => import('@/views/project/project'),
+        meta: { title: '项目列表', icon: 'user', roles: ['运维组'], noCache: true }
+      },
+      {
+        path: '/project/region',
+        name: 'ProjectRegion',
+        component: () => import('@/views/project/projectRegion'),
+        meta: { title: '地区列表', icon: 'user', roles: ['运维组'], noCache: true }
+      },
+      {
+        path: '/project/area',
+        name: 'ProjectArea',
+        component: () => import('@/views/project/projectArea'),
+        meta: { title: '大区列表', icon: 'user', roles: ['运维组'], noCache: true }
+      },
+      {
+        path: '/project/role',
+        name: 'ProjectRole',
+        component: () => import('@/views/project/projectRole'),
+        meta: { title: '角色列表', icon: 'user', roles: ['运维组'], noCache: true }
+      }
+    ]
+  },
+  {
     path: '/cmdb',
     name: 'cmdb',
     component: Layout,
